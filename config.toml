@@ -1,0 +1,11 @@
+[source]
+host = "http://host:port"
+username = "user"
+password = "pass"
+legacy = true
+
+[target]
+host = "http://host:port"
+username = "user"
+password = "pass"
+legacy = false
