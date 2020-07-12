@@ -8,15 +8,18 @@ from subhost import Subhost
 from migrater import Migrater
 
 def createClient(hostConfig):
+    print(hostConfig)
     return Subhost(
         hostConfig['host'],
         hostConfig['username'],
-        hostConfig['password'], hostConfig['legacy'])
+        hostConfig['password'],
+        hostConfig['port'],
+        hostConfig['legacy'])
 
 def run(config):
     # Get clients for the source and targer servers
-    source = createClient(config['source'])
-    target = createClient(config['target'])
+    source = createClient(config.source)
+    target = createClient(config.target)
     # Init migrater
     migrater = Migrater(source, target)
     # Migrate playlists if required

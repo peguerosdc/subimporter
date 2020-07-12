@@ -1,4 +1,7 @@
 
+def stringifySong(song):
+    return f"<'{song['name']}' by '{song['artist']}' in '{song['album']}'>"
+
 class Migrater(object):
 
     """Migrater"""
@@ -27,7 +30,10 @@ class Migrater(object):
                 playlist = self.source.getPlaylist(p["id"])
                 for song in playlist['entry']:
                     matchSong = self.target.findClosestMatchToSong(song)
-                    self.target.addSongToPlaylist(targetPlaylist['id'], matchSong['id'])
+                    if matchSong:
+                        self.target.addSongToPlaylist(targetPlaylist['id'], matchSong['id'])
+                    else:
+                        print(f"No match to {stringifySong(song)}")
 
     def migrateStarred(self):
         # TODO: support albums or artists too
@@ -39,4 +45,4 @@ class Migrater(object):
             if matchSong:
                 self.target.starSong(matchSong['id'])
             else:
-                print("No matching song found")
+                print(f"No match to {stringifySong(song)}")

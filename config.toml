@@ -2,13 +2,15 @@ migratePlaylists = true
 migrateStarred = true
 
 [source]
-host = "http://host:port"
+host = "http://host"
+port = 8080
 username = "user"
 password = "pass"
 legacy = true
 
 [target]
-host = "http://host:port"
+host = "http://host"
+port = 8080
 username = "user"
 password = "pass"
 legacy = false

@@ -28,12 +28,14 @@ class Config(object):
             Optional('migrateStarred', default=True): bool,
             'source': {
                 'host': str,
+                'port' : int,
                 'username': str,
                 'password': str,
                 'legacy': bool,
             },
             'target': {
                 'host': str,
+                'port' : int,
                 'username': str,
                 'password': str,
                 'legacy': bool,

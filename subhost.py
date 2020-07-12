@@ -4,18 +4,20 @@ from subsonic import Subsonic
 class Subhost(object):
 
     """Host wrapper for subsonic clients"""
-    def __init__(self, host, username, password, isLegacy):
+    def __init__(self, host, username, password, port, isLegacy):
         self.client = Subsonic(
             host,
             username,
-            password, legacyAuth=isLegacy)
+            password,
+            port=port, legacyAuth=isLegacy)
 
     def getStarredSongs(self):
         response = self.client.getStarred2()
         return response['song'] if response['song'] else []
 
     def starSong(self, songId):
-        return self.client.star(sids=[songId])
+        # return self.client.star(sids=[songId])
+        pass
 
     def getPlaylists(self):
         return self.client.getPlaylists()
@@ -32,7 +34,8 @@ class Subhost(object):
                 return p
 
     def addSongToPlaylist(self, playlistId, songId):
-        return self.client.updatePlaylist(playlistId=playlistId, songIdToAdd=songId)
+        #return self.client.updatePlaylist(playlistId=playlistId, songIdToAdd=songId)
+        pass
 
     def searchSong(self, name):
         return self.client.search3(query=name, artistCount=0, albumCount=0)
@@ -42,6 +45,7 @@ class Subhost(object):
         # Get closest song in the results
         for s in results['song']:
             if s['name'] == song['name'] and s['artist'] == song['artist'] and s['album'] == song['album']:
+                print(f"Closest song to {stringifySong(song)} is {stringifySong(s)}")
                 return s
         return None
 
