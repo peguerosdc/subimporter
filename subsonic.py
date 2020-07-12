@@ -24,11 +24,7 @@ class Subsonic(object):
 
     def createPlaylist(self, name):
         response = self.client.createPlaylist(name=name)
-        # Reload playlists to find this element
-        playlists = self.client.getPlaylists()
-        for p in playlists:
-            if p['name'] == name:
-                return p
+        return True
 
     def updatePlaylist(self, *args, **kwargs):
         response = self.client.updatePlaylist(*args, **kwargs)
