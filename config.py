@@ -1,5 +1,5 @@
 import toml
-from schema import Schema, SchemaError
+from schema import Schema, SchemaError, Optional
 
 class Config(object):
 
@@ -7,8 +7,8 @@ class Config(object):
     def __init__(self, path):
         # Read configuration file and check it is in a valid format
         try:
-            config = toml.load(path)
-            self.__check__(config)
+            rawConfig = toml.load(path)
+            config = self.__validate__(rawConfig)
         except FileNotFoundError:
             raise ConfigError(f"Configuration file '{path}' not found")
         except (TypeError, toml.TomlDecodeError) as e:
@@ -18,10 +18,14 @@ class Config(object):
         # Store into useful objects
         self.source = config["source"]
         self.target = config["target"]
+        self.migratePlaylists = config["migratePlaylists"]
+        self.migrateStarred = config["migrateStarred"]
 
-    def __check__(self, config):
+    def __validate__(self, config):
         # This is the expected template
         schema = Schema({
+            Optional('migratePlaylists', default=True): bool,
+            Optional('migrateStarred', default=True): bool,
             'source': {
                 'host': str,
                 'username': str,
@@ -36,7 +40,7 @@ class Config(object):
             },
         })
         # Check that the provided config is valid
-        schema.validate(config)
+        return schema.validate(config)
 
         
 class ConfigError(Exception):

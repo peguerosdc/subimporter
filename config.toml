@@ -1,3 +1,6 @@
+migratePlaylists = true
+migrateStarred = true
+
 [source]
 host = "http://host:port"
 username = "user"

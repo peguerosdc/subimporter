@@ -10,6 +10,10 @@ class Subsonic(object):
         response = self.client.getStarred2()
         return response["starred2"]
 
+    def star(self, *args, **kwargs):
+        response = self.client.star(*args, **kwargs)
+        return True
+
     def getPlaylists(self):
         response = self.client.getPlaylists()
         return response["playlists"]["playlist"]
@@ -17,3 +21,19 @@ class Subsonic(object):
     def getPlaylist(self, *args, **kwargs):
         response = self.client.getPlaylist(*args, **kwargs)
         return response["playlist"]
+
+    def createPlaylist(self, name):
+        response = self.client.createPlaylist(name=name)
+        # Reload playlists to find this element
+        playlists = self.client.getPlaylists()
+        for p in playlists:
+            if p['name'] == name:
+                return p
+
+    def updatePlaylist(self, *args, **kwargs):
+        response = self.client.updatePlaylist(*args, **kwargs)
+        return True
+
+    def search3(self, *args, **kwargs):
+        response = self.client.search3(*args, **kwargs)
+        return response["u'searchResult3"]
