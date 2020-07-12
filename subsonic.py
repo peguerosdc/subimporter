@@ -32,4 +32,4 @@ class Subsonic(object):
 
     def search3(self, *args, **kwargs):
         response = self.client.search3(*args, **kwargs)
-        return response["u'searchResult3"]
+        return response["searchResult3"]

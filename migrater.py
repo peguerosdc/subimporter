@@ -1,6 +1,5 @@
 
-def stringifySong(song):
-    return f"<'{song['name']}' by '{song['artist']}' in '{song['album']}'>"
+from utils import stringifySong
 
 class Migrater(object):
 
@@ -21,13 +20,13 @@ class Migrater(object):
         playlists = self.source.getPlaylists()
         for playlist in playlists:
             # Ask if this playlist should be migrated
-            if should(f"Migrate {playlist['name']} with {playlist['songCount']} songs Y/[N]?"):
+            if should(f"Migrate {playlist['name']} with {playlist['songCount']} songs Y/[N]? "):
                 print(f"Migrating...")
                 # Create a new playlist in the target server
                 # TODO: what happens if that playlist already exists?
                 targetPlaylist = self.target.createPlaylist(playlist['name'])
                 # Add each song in this playlist to the new targetPlaylist
-                playlist = self.source.getPlaylist(p["id"])
+                playlist = self.source.getPlaylist(playlist["id"])
                 for song in playlist['entry']:
                     matchSong = self.target.findClosestMatchToSong(song)
                     if matchSong:

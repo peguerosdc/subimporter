@@ -1,5 +1,6 @@
 
 from subsonic import Subsonic
+from utils import stringifySong
 
 class Subhost(object):
 
@@ -30,22 +31,23 @@ class Subhost(object):
         # Reload playlists to find this element
         playlists = self.client.getPlaylists()
         for p in playlists:
-            if p['name'] == name:
+            if p['name'] == playlistName:
                 return p
 
     def addSongToPlaylist(self, playlistId, songId):
         #return self.client.updatePlaylist(playlistId=playlistId, songIdToAdd=songId)
         pass
 
-    def searchSong(self, name):
-        return self.client.search3(query=name, artistCount=0, albumCount=0)
+    def searchSong(self, title):
+        return self.client.search3(query=title, artistCount=0, albumCount=0)
 
     def findClosestMatchToSong(self, song):
-        results = self.client.search3(query=song['name'], artistCount=0, albumCount=0)
+        results = self.client.search3(query=song['title'], artistCount=0, albumCount=0)
         # Get closest song in the results
-        for s in results['song']:
-            if s['name'] == song['name'] and s['artist'] == song['artist'] and s['album'] == song['album']:
-                print(f"Closest song to {stringifySong(song)} is {stringifySong(s)}")
-                return s
+        if 'song' in results:
+            for s in results['song']:
+                if s['title'] == song['title'] and s['artist'] == song['artist'] and s['album'] == song['album']:
+                    #print(f"Closest song to\n  {stringifySong(song)} is\n  {stringifySong(s)}")
+                    return s
         return None
 

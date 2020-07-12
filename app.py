@@ -8,7 +8,6 @@ from subhost import Subhost
 from migrater import Migrater
 
 def createClient(hostConfig):
-    print(hostConfig)
     return Subhost(
         hostConfig['host'],
         hostConfig['username'],
