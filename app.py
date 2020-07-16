@@ -20,7 +20,7 @@ def run(config):
     source = createClient(config.source)
     target = createClient(config.target)
     # Init migrater
-    migrater = Migrater(source, target)
+    migrater = Migrater(source, target, mock=config.mockMigration)
     # Migrate playlists if required
     if config.migratePlaylists:
         migrater.migratePlaylists()

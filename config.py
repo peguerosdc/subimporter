@@ -20,12 +20,14 @@ class Config(object):
         self.target = config["target"]
         self.migratePlaylists = config["migratePlaylists"]
         self.migrateStarred = config["migrateStarred"]
+        self.mockMigration = config["mockMigration"]
 
     def __validate__(self, config):
         # This is the expected template
         schema = Schema({
             Optional('migratePlaylists', default=True): bool,
             Optional('migrateStarred', default=True): bool,
+            Optional('mockMigration', default=False): bool,
             'source': {
                 'host': str,
                 'port' : int,

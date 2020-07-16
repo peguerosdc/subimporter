@@ -17,8 +17,7 @@ class Subhost(object):
         return response['song'] if response['song'] else []
 
     def starSong(self, songId):
-        # return self.client.star(sids=[songId])
-        pass
+        return self.client.star(sids=[songId])
 
     def getPlaylists(self):
         return self.client.getPlaylists()
@@ -35,19 +34,35 @@ class Subhost(object):
                 return p
 
     def addSongToPlaylist(self, playlistId, songId):
-        #return self.client.updatePlaylist(playlistId=playlistId, songIdToAdd=songId)
-        pass
+        return self.client.updatePlaylist(playlistId=playlistId, songIdToAdd=songId)
 
     def searchSong(self, title):
         return self.client.search3(query=title, artistCount=0, albumCount=0)
 
     def findClosestMatchToSong(self, song):
-        results = self.client.search3(query=song['title'], artistCount=0, albumCount=0)
-        # Get closest song in the results
-        if 'song' in results:
-            for s in results['song']:
-                if s['title'] == song['title'] and s['artist'] == song['artist'] and s['album'] == song['album']:
+        # Wrapper for pagination
+        def getPaginatedSongs(query, count, offset):
+            results = self.client.search3(query=query, songCount=count, artistCount=0, albumCount=0, songOffset=offset)
+            return results['song'] if 'song' in results else []
+        # Heuristic to compare songs
+        def areEqual(song1, song2):
+            # Check if they are strictly equal tag by tag
+            exactlyEqual = song1['title'].lower() == song2['title'].lower() and song1['artist'].lower() == song2['artist'].lower() and song1['album'].lower() == song2['album'].lower()
+            # Check if they are somehow equal
+            somehowEqual = song1['title'].lower() == song2['title'].lower() and song1['duration'] == song2['duration']
+            return exactlyEqual or somehowEqual
+        # Look for the closest song in this server
+        songOffset = 0
+        songCount = 20
+        candidates = getPaginatedSongs(song['title'], songCount, songOffset)
+        while candidates:
+            # Get closest song in the results
+            for candidate in candidates:
+                if areEqual(song, candidate):
                     #print(f"Closest song to\n  {stringifySong(song)} is\n  {stringifySong(s)}")
-                    return s
+                    return candidate
+            # Query again if the song was not present in this batch
+            songOffset += songCount
+            candidates = getPaginatedSongs(song['title'], songCount, songOffset)
         return None
 
