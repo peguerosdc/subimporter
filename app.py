@@ -3,32 +3,21 @@ import sys
 # Configuration imports
 import argparse
 from config import Config, ConfigError
-# Migration imports
-from subhost import Subhost
-from migrater import Migrater
+# Importer
+import subimporter
 
-def createClient(hostConfig):
-    return Subhost(
-        hostConfig['host'],
-        hostConfig['username'],
-        hostConfig['password'],
-        hostConfig['port'],
-        hostConfig['legacy'])
+def mapLogLevel(l):
+    logs = {
+        "info" : logging.INFO,
+        "debug" : logging.DEBUG,
+        "warn" : logging.WARNING,
+        "no" : logging.NOTSET,
+        "error" : logging.ERROR,
+        "critical": logging.CRITICAL
+    }
+    default = logs["info"]
+    return logs[l] if l in logs else default
 
-def run(config):
-    # Get clients for the source and targer servers
-    source = createClient(config.source)
-    target = createClient(config.target)
-    # Init migrater
-    migrater = Migrater(source, target, mock=config.mockMigration)
-    # Migrate playlists if required
-    if config.migratePlaylists:
-        migrater.migratePlaylists()
-    # Migrate starred songs
-    if config.migrateStarred:
-        migrater.migrateStarred()
-
-# Main app
 if __name__ == '__main__':
     # Get configuration file from args
     parser = argparse.ArgumentParser(description='Migrate from one Subsonic server to another')
@@ -38,8 +27,17 @@ if __name__ == '__main__':
     try:
         c = Config(args.config)
     except ConfigError as e:
-        print(e)
+        logger.error(e)
         sys.exit(1)
+    # Set up logging
+    import logging
+    logging.basicConfig(stream=sys.stdout, format='[%(name)s] %(levelname)s: %(message)s', level=mapLogLevel(c.logLevel))
+    logger = logging.getLogger(__name__)
     # Run
-    run(c)
-    sys.exit(0)
+    try:
+        subimporter.run(c)
+        logger.info("DONE")
+        sys.exit(0)
+    except KeyboardInterrupt:
+        logger.info("INTERRUPTED")
+        sys.exit(1)

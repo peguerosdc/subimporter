@@ -1,6 +1,8 @@
 migratePlaylists = true
+migratePlaylistsInteractive = true
 migrateStarred = true
 mockMigration = false
+log = "info"
 
 [source]
 host = "http://host"
