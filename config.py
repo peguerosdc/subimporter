@@ -38,6 +38,7 @@ class Config(object):
                 'username': str,
                 'password': str,
                 'legacy': bool,
+                'version': str
             },
             'target': {
                 'host': str,
@@ -45,14 +46,15 @@ class Config(object):
                 'username': str,
                 'password': str,
                 'legacy': bool,
+                'version': str
             },
         })
         # Check that the provided config is valid
         return schema.validate(config)
 
-        
+
 class ConfigError(Exception):
-    
+
     """Error when parsing a configuration file"""
     def __init__(self, message):
         self.message = message

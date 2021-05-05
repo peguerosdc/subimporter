@@ -51,6 +51,7 @@ password = "pass"
 # (< 1.13.0). If 'false', then the host is using md5(password + salt)
 # authentication (>= 1.13.0).
 legacy = true
+version="1.15.0"
 
 # Configuration of the target host (the host where the songs are going to
 # be migrated).
@@ -60,6 +61,7 @@ port = 8080
 username = "user"
 password = "pass"
 legacy = false
+version="1.15.0"
 ```
 
 For a sample, check `config.toml`.

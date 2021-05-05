@@ -11,7 +11,8 @@ def createClient(hostConfig):
         hostConfig['username'],
         hostConfig['password'],
         hostConfig['port'],
-        hostConfig['legacy'])
+        hostConfig['legacy'],
+        hostConfig['version'])
 
 def run(config):
     # Get clients for the source and targer servers

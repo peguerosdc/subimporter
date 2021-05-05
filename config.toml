@@ -10,6 +10,7 @@ port = 8080
 username = "user"
 password = "pass"
 legacy = true
+version="1.15.0"
 
 [target]
 host = "http://host"
@@ -17,3 +18,5 @@ port = 8080
 username = "user"
 password = "pass"
 legacy = false
+version="1.15.0"
+
