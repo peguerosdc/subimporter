@@ -8,19 +8,21 @@ logger = logging.getLogger(__name__)
 class Subhost(object):
 
     """Host wrapper for subsonic clients"""
-    def __init__(self, host, username, password, port, isLegacy):
+    def __init__(self, host, username, password, port, isLegacy, apiVersion):
         self.client = Subsonic(
             host,
             username,
             password,
-            port=port, legacyAuth=isLegacy)
+            port=port, legacyAuth=isLegacy,
+            apiVersion=apiVersion)
         self.host = host
         self.username = username
         self.port = port
         self.isLegacy = isLegacy
+        self.apiVersion = apiVersion
 
     def __str__(self):
-        return f"<Subhost {self.username}@{self.host}:{self.port} isLegacy={self.isLegacy} >"
+        return f"<Subhost {self.username}@{self.host}:{self.port} isLegacy={self.isLegacy} apiVersion={self.apiVersion} >"
 
     def getStarredSongs(self):
         response = self.client.getStarred2()

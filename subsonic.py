@@ -8,6 +8,7 @@ class Subsonic(object):
 
     def getStarred2(self):
         response = self.client.getStarred2()
+
         return response["starred2"]
 
     def star(self, *args, **kwargs):
